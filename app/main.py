@@ -1,6 +1,8 @@
 from tornado.web import Application, RequestHandler
 from tornado.ioloop import IOLoop
 
+import json
+
 from animals import animals
 
 
@@ -54,17 +56,30 @@ class listAnimalsResourcesRequestHandler(RequestHandler):
         self.write(f"""
             <ol>{list_animals}</ol>
         """)
-            
 
+class readListOfFruitsFromTxtFile(RequestHandler):
+    def get(self):
+        fh = open("fruits.txt")
+        fruits = fh.read().splitlines()
+        fh.close()
+        self.write(json.dumps(fruits))
 
+    def post(self):
+        fruit = self.get_argument("fruit")        
+
+        fh = open("fruits.txt", "a")
+        fh.write(f"{fruit}\n")
+        fh.close
+        self.write(f"Message: Fruit {fruit} added succesfully!")
 
 if __name__ == "__main__":
     app = Application([
         (r"/", requestHandler),
         (r"/animals", listRequestHandler),
         (r"/animals/basic", basicAnimalQueryRequestHandler),
-        (r"/animals/([A-Za-z]+)", listAnimalsResourcesRequestHandler)
-        ])
+        (r"/animals/info/([A-Za-z]+)", listAnimalsResourcesRequestHandler),
+        (r"/fruits", readListOfFruitsFromTxtFile),
+    ])
 
     port = 7766
     app.listen(port)
