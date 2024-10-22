@@ -4,18 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animals</title>
+    <title>Fruit</title>
 </head>
 
 <body>
-    <h1>Select your favorite animal!</h1>
+    <h1>Select your favorite fruit!</h1>
 
-    <select name="animals">
-        <option>Bird</option>
-        <option>Dog</option>
-        <option>Cats</option>
-    </select>
+    <select id="fruit-select"></select>
 
+    <div>
+        <input type="text" id="input-text">
+        <input type="button" id="submit-button" value="Submit">
+    </div>
+
+    <script>
+        let fruitSelect = document.getElementById("fruit-select")
+
+        fetch('http://localhost:7766/fruits')
+            .then(response => response.json())
+            .then(jsonResponse => jsonResponse.forEach(fruit => {
+                let optionEl = document.createElement('option')
+                optionEl.textContent = fruit
+
+                fruitSelect.appendChild(optionEl)
+            }))
+
+        let btnSubmit = document.getElementById('submit-button')
+
+        btnSubmit.addEventListener('click', e => {
+            let fruit = document.getElementById('input-text')
+
+            console.log(fruit.value)
+
+
+            fetch(`http://localhost:7766/fruits?fruit=${fruit.value}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(json => alert(json.message))
+        })
+    </script>
 </body>
 
 </html>

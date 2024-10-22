@@ -1,10 +1,4 @@
 lemon
-lemon
-lemon
-lemon
-lemon
-lemon
-lemon
-lemon
-lemon
-lemon
+apple
+pear
+grapes

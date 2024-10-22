@@ -58,6 +58,11 @@ class listAnimalsResourcesRequestHandler(RequestHandler):
         """)
 
 class readListOfFruitsFromTxtFile(RequestHandler):
+    def set_default_headers(self):  
+        self.set_header("Access-Control-Allow-Origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "*")
+        self.set_header("Access-Control-Allow-Methods", "*")
+
     def get(self):
         fh = open("fruits.txt")
         fruits = fh.read().splitlines()
@@ -70,7 +75,7 @@ class readListOfFruitsFromTxtFile(RequestHandler):
         fh = open("fruits.txt", "a")
         fh.write(f"{fruit}\n")
         fh.close
-        self.write(f"Message: Fruit {fruit} added succesfully!")
+        self.write({'message': f"Message: Fruit {fruit} added succesfully!"})
 
 if __name__ == "__main__":
     app = Application([
